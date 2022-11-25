@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../../components/Button/Button';
-import Message from '../../components/Message/Message';
-import fetchApi from '../../utils/fetch';
-import { handleChange } from '../../utils/handleChange';
-import showMessage from '../../utils/showMessage';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button/Button";
+import Message from "../../components/Message/Message";
+import fetchApi from "../../utils/fetch";
+import { handleChange } from "../../utils/handleChange";
+import showMessage from "../../utils/showMessage";
 
 function Login() {
   const [loginInformation, setLoginInformation] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [message, setMessage] = useState({ show: false, text: '', status: '' });
+  const [message, setMessage] = useState({ show: false, text: "", status: ""});
 
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ function Login() {
       localStorage.setItem('token', JSON.stringify(token));
       navigate('/');
     } else {
-      showMessage(setMessage, apiMessage, 'error');
+      showMessage(setMessage, apiMessage, "error");
     }
   }
 
@@ -62,23 +62,23 @@ function Login() {
         </Message>
       }
       <form>
-        <label htmlFor='email'>
+        <label htmlFor="email">
           Email:
           <input
-            className='form-input'
-            id='email'
-            name='email'
-            type='text'
+            className="form-input"
+            id="email"
+            name="email"
+            type="text"
             onChange={(e) => handleChange(e, setLoginInformation)}
           />
         </label>
-        <label htmlFor='password'>
+        <label htmlFor="password">
           Senha:
           <input
-            className='form-input'
-            id='password'
-            name='password'
-            type='password'
+            className="form-input"
+            id="password"
+            name="password"
+            type="password"
             onChange={(e) => handleChange(e, setLoginInformation)}
           />
         </label>

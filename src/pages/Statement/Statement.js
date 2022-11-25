@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../../components/Button/Button';
-import isAuthenticated from '../../utils/auth';
-import fetchApi from '../../utils/fetch';
-import { handleChange } from '../../utils/handleChange';
-import './Statement.css';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button/Button";
+import isAuthenticated from "../../utils/auth";
+import fetchApi from "../../utils/fetch";
+import { handleChange } from "../../utils/handleChange";
+import "./Statement.css";
 
 function Statement() {
   const [datesOfStatement, setDatesOfStatement] = useState({});
@@ -13,24 +13,24 @@ function Statement() {
   const navigate = useNavigate();
   const [incomeDetails, setIncomeDetails] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      navigate('/login');
+      navigate("/login");
     }
 
     async function getIncome() {
       const options = {
-        method: 'GET'
-      }
-  
+        method: "GET",
+      };
+
       const { income } = await fetchApi(
         `https://odonteo-backend.herokuapp.com/income/${user.id}`,
         options,
         true
       );
-  
+
       setIncomeDetails(income);
     }
 
@@ -42,14 +42,15 @@ function Statement() {
     setTotalIncome(0);
 
     incomeDetails.forEach(({ dates, installmentValue }) => {
-      const datesInInterval = JSON.parse(dates)
-        .filter((date) => {
-          return Date.parse(date) >= Date.parse(beginningDate)
-            && Date.parse(date) <= Date.parse(endingDate)
-        });
+      const datesInInterval = JSON.parse(dates).filter((date) => {
+        return (
+          Date.parse(date) >= Date.parse(beginningDate) &&
+          Date.parse(date) <= Date.parse(endingDate)
+        );
+      });
 
       setTotalIncome((oldState) => {
-        return oldState + (datesInInterval.length * JSON.parse(installmentValue));
+        return oldState + datesInInterval.length * JSON.parse(installmentValue);
       });
     });
 
@@ -59,37 +60,34 @@ function Statement() {
   return (
     <main>
       <form>
-        <label htmlFor='beginning-date'>
+        <label htmlFor="beginning-date">
           Data de início:
           <input
-            className='form-input date'
-            id='beginning-date'
-            name='beginningDate'
-            type='date'
+            className="form-input date"
+            id="beginning-date"
+            name="beginningDate"
+            type="date"
             onChange={(e) => handleChange(e, setDatesOfStatement)}
           />
         </label>
-        <label htmlFor='ending-date'>
+        <label htmlFor="ending-date">
           Data de fim:
           <input
-            className='form-input date'
-            id='ending-date'
-            name='endingDate'
-            type='date'
+            className="form-input date"
+            id="ending-date"
+            name="endingDate"
+            type="date"
             onChange={(e) => handleChange(e, setDatesOfStatement)}
           />
         </label>
-        <Button
-          addClassName='form-button'
-          onClickFunction={checkIncome}
-        >
+        <Button addClassName="form-button" onClickFunction={checkIncome}>
           Consultar faturamento
         </Button>
       </form>
-      {renderStatement &&
-        <div className='statement'>
+      {renderStatement && (
+        <div className="statement">
           <button
-            className='close-button'
+            className="close-button"
             onClick={() => setRenderStatement(false)}
           >
             x
@@ -103,19 +101,17 @@ function Statement() {
             <tbody>
               <tr>
                 <td>
-                  {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
                   }).format(totalIncome)}
                 </td>
               </tr>
             </tbody>
           </table>
-        </div>}
-      <Button
-        id='go-back-button'
-        onClickFunction={() => navigate('/')}
-      >
+        </div>
+      )}
+      <Button id="go-back-button" onClickFunction={() => navigate("/")}>
         Voltar
       </Button>
     </main>
